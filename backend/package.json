@@ -1,0 +1,40 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Storefront backend API",
+  "main": "dist/index.js",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bcryptjs": "^3.0.0",
+    "@types/bun": "^1.3.14",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/pg": "^8.11.0",
+    "@venizia/dev-configs": "^0.0.7",
+    "cross-env": "^10.1.0",
+    "eslint": "^10.7.0",
+    "prettier": "^3.9.5",
+    "tsc-alias": "^1.9.0",
+    "typescript": "^6.0.3"
+  },
+  "scripts": {
+    "build": "bun build src/index.ts --outdir dist --target bun --external casbin --external socket.io --external socket.io-client --external @socket.io/bun-engine --external @socket.io/redis-adapter --external @socket.io/redis-emitter --external bullmq --external nodemailer --external mailgun.js --external @connectrpc/connect",
+    "preserver:dev": "bun run build",
+    "server:dev": "cross-env NODE_ENV=development bun .",
+    "preserver:prod": "bun run build",
+    "server:prod": "cross-env NODE_ENV=production bun ."
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.0.8",
+    "@hono/swagger-ui": "^0.6.1",
+    "@hono/zod-openapi": "^1.4.0",
+    "@scalar/hono-api-reference": "^0.11.9",
+    "@venizia/ignis": "^0.0.9",
+    "@venizia/ignis-helpers": "^0.0.8",
+    "drizzle-orm": "^0.45.2",
+    "hono": "^4.12.30",
+    "pg": "^8.22.0",
+    "jsonwebtoken": "^9.0.3",
+    "bcryptjs": "^3.0.3"
+  }
+}

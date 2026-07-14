@@ -21,6 +21,7 @@ import { UserRepository } from './repositories/user.repository';
 import { AuthService } from './services/auth.service';
 import { CartService } from './services/cart.service';
 import { ProductService } from './services/product.service';
+import { cors } from 'hono/cors'
 
 export class Application extends BaseApplication {
   constructor() {
@@ -92,5 +93,11 @@ export class Application extends BaseApplication {
 
   postConfigure() {}
 
-  setupMiddlewares() {}
+  setupMiddlewares() {
+    const server = this.getServer();
+    server.use('*', cors({
+      origin: ['http://localhost:3001'],
+      credentials: true,
+    }));
+  }
 }

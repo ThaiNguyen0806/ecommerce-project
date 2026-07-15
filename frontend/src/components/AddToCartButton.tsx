@@ -31,8 +31,12 @@ export default function AddToCartButton({ productId }: { productId: number }) {
   }
 
   return (
-    <button onClick={handleClick} disabled={loading}>
-      {added ? "Added!" : loading ? "Adding..." : "Add to Cart"}
-    </button>
-  );
+  <button
+    onClick={handleClick}
+    disabled={loading}
+    className="text-sm px-3 py-1.5 bg-gray-900 text-white rounded-md hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+  >
+    {added ? "Added!" : loading ? "Adding..." : "Add to Cart"}
+  </button>
+);
 }

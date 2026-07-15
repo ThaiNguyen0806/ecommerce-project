@@ -1,3 +1,5 @@
+import AddToCartButton from "../components/AddToCartButton";
+
 async function getProducts() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
     cache: "no-store",
@@ -18,6 +20,7 @@ export default async function HomePage() {
           <li key={product.id}>
             <strong>{product.name}</strong> — ${(product.priceCents / 100).toFixed(2)}
             <p>{product.description}</p>
+            <AddToCartButton productId={product.id} />
           </li>
         ))}
       </ul>

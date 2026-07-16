@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { apiFetch } from "../lib/api";
 
 type CartItem = {
@@ -65,31 +66,81 @@ export default function CartPage() {
   }
 
   if (checkingAuth || loadingItems) {
-    return <p>Loading cart...</p>;
+    return (
+      <main className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <p className="text-gray-400 text-sm">Loading cart...</p>
+      </main>
+    );
   }
 
   const total = items.reduce((sum, item) => sum + item.priceCents * item.quantity, 0);
 
   return (
-    <div>
-      <h1>Your Cart</h1>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {items.length === 0 && <p>Your cart is empty.</p>}
-      <ul>
-        {items.map((item) => (
-          <li key={item.id}>
-            <strong>{item.name}</strong> — ${(item.priceCents / 100).toFixed(2)} each
-            <input
-              type="number"
-              min={1}
-              value={item.quantity}
-              onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value))}
-            />
-            <button onClick={() => handleRemove(item.id)}>Remove</button>
-          </li>
-        ))}
-      </ul>
-      {items.length > 0 && <h2>Total: ${(total / 100).toFixed(2)}</h2>}
-    </div>
+    <main className="min-h-screen bg-gray-50">
+      <div className="max-w-3xl mx-auto px-6 py-12">
+        <h1 className="text-3xl font-bold text-gray-900 tracking-tight mb-8">Your Cart</h1>
+
+        {error && (
+          <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2 mb-6">
+            {error}
+          </p>
+        )}
+
+        {items.length === 0 ? (
+          <div className="text-center py-20 border border-dashed border-gray-300 rounded-xl">
+            <p className="text-gray-500 mb-4">Your cart is empty.</p>
+            <Link
+              href="/"
+              className="text-sm font-medium text-gray-900 hover:underline"
+            >
+              Browse products
+            </Link>
+          </div>
+        ) : (
+          <div className="bg-white border border-gray-200 rounded-xl shadow-sm divide-y divide-gray-100">
+            {items.map((item) => (
+              <div key={item.id} className="flex items-center justify-between p-5">
+                <div>
+                  <h2 className="text-sm font-semibold text-gray-900">{item.name}</h2>
+                  <p className="text-sm text-gray-500 mt-0.5">
+                    ${(item.priceCents / 100).toFixed(2)} each
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <input
+                    type="number"
+                    min={1}
+                    value={item.quantity}
+                    onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value))}
+                    className="w-16 px-2 py-1.5 border border-gray-300 rounded-md text-sm text-center focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                  />
+                  <span className="text-sm font-semibold text-gray-900 w-20 text-right">
+                    ${((item.priceCents * item.quantity) / 100).toFixed(2)}
+                  </span>
+                  <button
+                    onClick={() => handleRemove(item.id)}
+                    className="text-sm text-red-600 hover:text-red-700 hover:underline"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {items.length > 0 && (
+          <div className="flex items-center justify-between mt-6 px-1">
+            <span className="text-sm text-gray-500">
+              {items.length} {items.length === 1 ? "item" : "items"}
+            </span>
+            <span className="text-xl font-bold text-gray-900">
+              Total: ${(total / 100).toFixed(2)}
+            </span>
+          </div>
+        )}
+      </div>
+    </main>
   );
 }
